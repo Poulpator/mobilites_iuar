@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Quick Start - Leaflet</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    
+    
+	
+</head>
+<body>
+
+
+
+<h2>Instructions </h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+<h2>
+    Test
+</h2>
+
+<form action="">
+    <input type="text" name="" id="">
+    <div id="map" style="height: 450px;"></div>
+    <input type="button" value="Valider">
+</form>
+
+<br>
+
+
+<script>
+
+
+    //Aix en provence : [43.52, 5.44]
+    map = L.map('map').setView( [43.52, 5.44], 13);
+    map.locate({setView:true, maxZoom:13});
+    //var map = L.map('map').locate({setView:true, maxZoom:13});
+
+
+	var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11',
+		tileSize: 512,
+		zoomOffset: -1
+	}).addTo(map);
+
+    // var marker = L.marker([51.5, -0.09]).addTo(map);
+    // marker.bindPopup("<b>hello world</b>").openPopup();
+
+    var iuar_marker  = L.marker([43.518182, 5.443168]).addTo(map);
+    iuar_marker.bindPopup("<b>IUAR</b>");
+
+
+
+    
+
+    // var TransportEnum = {
+    //     MARCHE  : 0,
+    //     VELO    : 1,
+    //     VOITURE : 2
+    // };
+    var color_coding_transport = {
+        MARCHE : "blue",
+        VELO : "green",
+        VOITURE : "red"
+    };
+
+    var current_transport = color_coding_transport.MARCHE;
+    var last_transport = current_transport;
+    
+    /*
+    button :
+    - reset 
+    - undo
+    - redo (si le temps)
+    - un part mode de transports 
+
+    */
+
+
+    var helloPopup = L.popup().setContent('Hello World!');
+
+    
+    var but_undo = L.easyButton('fa-arrow-left', function(btn, map){
+        
+        // chemin.pop();
+        // polyline.setLatLngs(chemin);
+
+        if (chemin.length == 0) {
+            return
+        }
+
+        // var last_line = chemin[chemin.length -1];
+        // if (last_line.line_points.length == 0) {
+        //     last_line.polyline.removeFrom(map);
+        //     chemin.pop();
+        //     last_line = chemin[chemin.length -1];
+        // }
+
+        // last_line = chemin[chemin.length -1];
+        // last_line.line_points.pop();
+        // last_line.polyline.setLatLngs(last_line.line_points);
+        
+    });
+    var but_reset = L.easyButton('fa-undo', function(btn, map){
+        //chemin = [];
+        //polyline.setLatLngs(chemin);
+
+        while(elt = chemin.pop()){
+            elt.polyline.removeFrom(map);
+        }
+        preview_polyline.setLatLngs([]);
+
+    });
+
+
+    buttons_navigation = [but_undo, but_reset];
+    L.easyBar(buttons_navigation).addTo(map)
+    var but_test  = L.easyButton('fa-globe', function(btn, map){
+        helloPopup.setLatLng(map.getCenter()).openOn(map);
+    }).addTo(map);
+
+
+    function SwitchModeTransport(NouveauModeTransport) {
+        last_transport = current_transport;
+        current_transport = NouveauModeTransport;
+    }
+
+    var but1 = L.easyButton('fa-walking', function(btn, map){
+        SwitchModeTransport(color_coding_transport.MARCHE);
+    }).addTo(map);
+
+    var but2 = L.easyButton('fa-bicycle', function(btn, map){
+        SwitchModeTransport(color_coding_transport.VELO);
+    }).addTo(map);
+
+    but2.innerHTML = "fefe";
+    var button_transport = [but_test, but1, but2]
+    L.easyBar(button_transport).addTo(map);
+
+    
+    function TestFunction() {
+        console.log("test");
+    }
+
+    L.Control.Watermark = L.Control.extend({
+        onAdd: function(map) {
+            // var img = L.DomUtil.create('img');
+
+            // img.src = '../../docs/images/logo.png';
+            // img.style.width = '200px';
+
+            // return img;
+            // var button = L.DomUtil.create('a', );
+            // button.innerHTML= "test";
+            
+            var button = L.DomUtil.create('a');
+            button.innerHTML = "test";
+            button.href = '#';
+            button.title = "test";
+
+            L.DomEvent.disableClickPropagation(button);
+            L.DomEvent.on(button, 'click', L.DomEvent.stop);
+            L.DomEvent.on(button, 'click', TestFunction, this);
+            L.DomEvent.on(button, 'click', this._refocusOnMap, this);
+            return button
+        },
+
+        onRemove: function(map) {
+            // Nothing to do here
+        }
+    });
+
+    L.control.watermark = function(opts) {
+        return new L.Control.Watermark(opts);
+    }
+    L.control.watermark({ position: 'topleft' }).addTo(map);
+    
+    //peut etre le retablir pour un tuto ? 
+    // var popup = L.popup();   
+
+    var chemin = [];
+
+    var polyline = L.polyline(chemin, {color: 'red'}).addTo(map);
+    
+    function onMapClick(e) {
+        //peut etre le retablir pour un tuto ? 
+        // popup
+        //     .setLatLng(e.latlng)
+        //     .setContent("You clicked the map at " + e.latlng.toString())
+        //     .openOn(map);
+
+        if(current_transport != last_transport || chemin.length == 0){
+            chemin.push({
+                "color" : current_transport,
+                "line_points" : [],
+                "polyline" : L.polyline([], {color: current_transport}).addTo(map)
+            })
+
+            if(chemin.length > 1) {
+                // on ne part pas de zéro donc on reprend le dernier point
+                var  derniere_line = chemin[chemin.length - 2]
+                var  last_point = derniere_line.line_points[derniere_line.line_points.length -1]
+                console.log(last_point);
+                chemin[chemin.length - 1].line_points.push( last_point);
+            }
+            last_transport= current_transport;
+        }
+
+        let last_line = chemin[chemin.length - 1];
+        last_line.line_points.push(e.latlng);
+        last_line.polyline.setLatLngs(last_line.line_points);
+
+
+        // chemin.push(e.latlng);
+        // polyline.setLatLngs(chemin);
+        
+
+
+
+        // polyline.removeFrom(map)
+        // polyline = L.polyline(chemin, {color: 'red'}).addTo(map);
+    }
+
+    var preview_polyline = L.polyline([], {color: "pink"}).addTo(map);
+    function OnMouseMove(e) {
+        // if (chemin.length >= 1) {
+        //     preview_chemin = chemin.slice();
+        //     preview_chemin.push(e.latlng);
+        //     polyline.setLatLngs(preview_chemin);
+        // }
+        if(chemin.length == 0){
+            return
+        }
+
+        let last_line = chemin[chemin.length - 1];
+
+        preview_line = last_line.line_points.slice();
+        preview_line.push(e.latlng);
+        preview_polyline.setLatLngs(preview_line);
+
+
+        preview_polyline.setStyle({color:current_transport})
+        //preview_polyline.redraw();
+
+
+
+    }
+
+    map.on('click', onMapClick);
+    map.on('mousemove', OnMouseMove);
+
+</script>
+
+
+
+</body>
+</html>
