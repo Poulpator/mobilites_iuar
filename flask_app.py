@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from markupsafe import re
 from enum import Enum
 import configparser
-
+import os
 
 from sqlalchemy import create_engine
 import sqlalchemy
@@ -22,7 +22,8 @@ app = Flask(__name__)
 #app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 config = configparser.ConfigParser()
-config.read('config_db.ini')
+dirname = os.path.dirname(__file__)
+config.read(os.path.join(dirname, 'config_db.ini'))
 
 if dev_env== EnumDevEnv.PROD:
     
