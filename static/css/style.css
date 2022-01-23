@@ -1,17 +1,55 @@
-body
+html, body {
+  margin: 0;
+  padding: 0;
+
+  font-family: Open Sans,Arial;
+  color: #454545;
+  font-size: 16px;
+  line-height: 1.4;
+
+
+}
+
+main
 {
-    font-family: Open Sans,Arial;
-    color: #454545;
-    font-size: 16px;
     margin: 2em auto;
     max-width: 800px;
     padding: 1em;
-    line-height: 1.4;
     text-align: justify;
-  
 }
 
 
+footer
+{
+  color: white;
+  height : 80px;
+  background-color: #222;
+}
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
 
 /* Change cursor when mousing over clickable layer */
 
