@@ -31,9 +31,10 @@
     <h2>Instructions sur l'identifiant</h2>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-    <form action="" id="form_validation">
+    <form action="/traitement" id="form_validation" method="post">
         <label for="self_id">identifiant: </label>
-        <input type="text" name="" id="self_id" placeholder="ex: A8B">
+        <input type="text" id="self_id" name="self_id" placeholder="ex: A8B">
+        <input type="hidden" name="chemin" id="chemins-field" required>
     </form>
 
     <h2>
@@ -267,8 +268,23 @@
 
     }
 
+    function OnSubmit() {
+        console.log("on submuit ! ")
+        var hidden = document.querySelector("#chemins-field");
+        
+        //resolve circular dependancy 
+        var tmp_chemin = chemin;
+        tmp_chemin.map((e) => delete e.polyline);
+        hidden.value = JSON.stringify(tmp_chemin);
+
+        return true;
+
+    }
+
     map.on('click', onMapClick);
     map.on('mousemove', OnMouseMove);
+
+    document.querySelector('form').addEventListener("submit", OnSubmit);
 
 </script>
 

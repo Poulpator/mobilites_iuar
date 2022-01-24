@@ -1,7 +1,7 @@
 # save this as app.py
 
 from asyncore import read
-from flask import Flask, escape, render_template, request
+from flask import Flask, escape, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from markupsafe import re
 from enum import Enum
@@ -34,7 +34,7 @@ if dev_env== EnumDevEnv.PROD:
         databasename= config["PROD"]["databasename"],
     )
 elif dev_env == EnumDevEnv.DEV:
-    SQLALCHEMY_DATABASE_URI = "mariadb+mysql+pymysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
+    SQLALCHEMY_DATABASE_URI = "mariadb+mariadbconnector://{username}:{password}@{hostname}/{databasename}".format(
         username= config["DEV"]["username"],
         password= config["DEV"]["password"],
         hostname= config["DEV"]["hostname"],
@@ -64,7 +64,7 @@ class Reponse(db.Model):
     __tablename__ = "reponses"
     id = db.Column(db.Integer, primary_key=True)
     self_generated_id = db.Column(db.String(80), nullable=False)
-    chemin = db.Column(db.String(), nullable=False)
+    chemin = db.Column(db.String(4096), nullable=False)
 
     def __repr__(self):
         return '<Self generated id: %r>' % self.self_generated_id
@@ -79,4 +79,15 @@ def index():
 @app.route('/success')
 def success():
     return "success !"
+
+@app.route('/traitement', methods=["POST"])
+def traitement():
+
+
+    reponse = Reponse(self_generated_id=request.form["self_id"], chemin=request.form["chemin"])
+    db.session.add(reponse)
+    db.session.commit()
+    return redirect(url_for('success'))
+    return request.form
+
 
