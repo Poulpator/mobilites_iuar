@@ -137,10 +137,8 @@
         }
         
     });
-    
+
     var but_reset = L.easyButton('fa-undo', function(btn, map){
-        //chemin = [];
-        //polyline.setLatLngs(chemin);
 
         while(elt = chemin.pop()){
             elt.polyline.removeFrom(map);
@@ -220,8 +218,6 @@
 
     var chemin = [];
 
-    var polyline = L.polyline(chemin, {color: 'red'}).addTo(map);
-    
     function onMapClick(e) {
         //peut etre le retablir pour un tuto ? 
         // popup
@@ -249,24 +245,10 @@
         last_line.line_points.push(e.latlng);
         last_line.polyline.setLatLngs(last_line.line_points);
 
-
-        // chemin.push(e.latlng);
-        // polyline.setLatLngs(chemin);
-        
-
-
-
-        // polyline.removeFrom(map)
-        // polyline = L.polyline(chemin, {color: 'red'}).addTo(map);
     }
 
     var preview_polyline = L.polyline([], {color: "pink"}).addTo(map);
     function OnMouseMove(e) {
-        // if (chemin.length >= 1) {
-        //     preview_chemin = chemin.slice();
-        //     preview_chemin.push(e.latlng);
-        //     polyline.setLatLngs(preview_chemin);
-        // }
         if(chemin.length == 0){
             return
         }
