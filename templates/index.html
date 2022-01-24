@@ -120,9 +120,9 @@
             last_line.polyline.setLatLngs(last_line.line_points);
 
             //remove preview
-            // let tmp_line = preview_polyline.getLatLngs();
-            // tmp_line.splice(tmp_line.length - 2, 1);
-            // preview_polyline.setLatLngs(tmp_line);
+            let tmp_line = preview_polyline.getLatLngs();
+            tmp_line[0] = last_line.line_points[last_line.line_points.length -1]
+            preview_polyline.setLatLngs(tmp_line);
         }
         else if (last_line.line_points.length <= 2){
             //console.log("cas 4 et 4 bis");
@@ -130,13 +130,13 @@
             chemin.pop();
 
             //remove preview
-            // if (chemin.length == 0) {
-            //     preview_polyline.setLatLngs([]);
-            // } else {
-            //     let tmp_line = preview_polyline.getLatLngs();
-            //     tmp_line.splice(tmp_line.length - 2, 1);
-            //     preview_polyline.setLatLngs(tmp_line);
-            // }
+            if (chemin.length == 0) {
+                preview_polyline.setLatLngs([]);
+            } else {
+                let tmp_line = preview_polyline.getLatLngs();
+                tmp_line[0] = chemin[chemin.length -1 ].line_points.slice(-1)[0]
+                preview_polyline.setLatLngs(tmp_line);
+            }
         }
 
 
@@ -279,7 +279,7 @@
 
         let last_line = chemin[chemin.length - 1];
 
-        let preview_line = last_line.line_points.slice();
+        let preview_line = last_line.line_points.slice(-1);
         preview_line.push(e.latlng);
         preview_polyline.setLatLngs(preview_line);
 
