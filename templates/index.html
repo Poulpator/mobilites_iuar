@@ -118,32 +118,26 @@
             //console.log("cas 2 et 3");
             last_line.line_points.pop();
             last_line.polyline.setLatLngs(last_line.line_points);
-
-            //remove preview
-            let tmp_line = preview_polyline.getLatLngs();
-            tmp_line[0] = last_line.line_points[last_line.line_points.length -1]
-            preview_polyline.setLatLngs(tmp_line);
         }
         else if (last_line.line_points.length <= 2){
             //console.log("cas 4 et 4 bis");
             last_line.polyline.removeFrom(map);
             chemin.pop();
-
-            //remove preview
-            if (chemin.length == 0) {
-                preview_polyline.setLatLngs([]);
-            } else {
-                let tmp_line = preview_polyline.getLatLngs();
-                tmp_line[0] = chemin[chemin.length -1 ].line_points.slice(-1)[0]
-                preview_polyline.setLatLngs(tmp_line);
-            }
         }
 
-
-        
-
+        //remove preview
+        if (chemin.length == 0) {
+            //suprrimer la preview
+            preview_polyline.setLatLngs([]);
+        } else {
+            //recup le dernier point
+            let tmp_line = preview_polyline.getLatLngs();
+            tmp_line[0] = chemin[chemin.length -1 ].line_points.slice(-1)[0]
+            preview_polyline.setLatLngs(tmp_line);
+        }
         
     });
+    
     var but_reset = L.easyButton('fa-undo', function(btn, map){
         //chemin = [];
         //polyline.setLatLngs(chemin);
