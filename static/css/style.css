@@ -21,9 +21,14 @@ main
 
 footer
 {
-  color: white;
+  border-top: 1px solid lightslategray;
+  color: #6e7781;
+  max-width: 800px;
+  margin: auto;
+  margin-top: 4em;
+  /* color: white; */
   height : 80px;
-  background-color: #222;
+  /* background-color: #222; */
 }
 
 input[type=text], select {
@@ -50,6 +55,11 @@ input[type=submit] {
 input[type=submit]:hover {
   background-color: #45a049;
 }
+span.reverse {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+
 
 /* Change cursor when mousing over clickable layer */
 
