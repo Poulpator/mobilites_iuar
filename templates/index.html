@@ -100,8 +100,15 @@
     // };
     var color_coding_transport = {
         MARCHE : "blue",
-        VELO : "green",
-        VOITURE : "red"
+        VELO : "green", // libre service / personnel ?
+        VOITURE : "red", //covoiturage
+        BUS : "pink", //car bhns ?
+        TRAIN : "yellow",
+        TROTTINETTE : "orange",
+        METRO : "brown",
+        TRAM : "white",
+        DEUX_ROUES : "gray"
+
     };
 
     var current_transport = color_coding_transport.MARCHE;
@@ -164,11 +171,6 @@
     buttons_navigation = [but_undo, but_reset];
     L.easyBar(buttons_navigation).addTo(map)
 
-    
-    var helloPopup = L.popup().setContent('Hello World!');
-    var but_test  = L.easyButton('fa-globe', function(btn, map){
-        helloPopup.setLatLng(map.getCenter()).openOn(map);
-    }).addTo(map);
 
 
     function SwitchModeTransport(NouveauModeTransport) {
@@ -176,16 +178,27 @@
         current_transport = NouveauModeTransport;
     }
 
-    var but1 = L.easyButton('fa-walking', function(btn, map){
+    var but_walk = L.easyButton('fa-walking', function(btn, map){
         SwitchModeTransport(color_coding_transport.MARCHE);
     }).addTo(map);
 
-    var but2 = L.easyButton('fa-bicycle', function(btn, map){
+    var but_velo = L.easyButton('fa-bicycle', function(btn, map){
         SwitchModeTransport(color_coding_transport.VELO);
     }).addTo(map);
 
-    but2.innerHTML = "fefe";
-    var button_transport = [but_test, but1, but2]
+    var but_train = L.easyButton('fa-train', function(btn, map){
+        SwitchModeTransport(color_coding_transport.TRAIN);
+    }).addTo(map);
+
+    var but_bus = L.easyButton('fa-bus', function(btn, map){
+        SwitchModeTransport(color_coding_transport.BUS);
+    }).addTo(map);
+
+    var but_voiture = L.easyButton('fa-car', function(btn, map){
+        SwitchModeTransport(color_coding_transport.VOITURE);
+    }).addTo(map);
+
+    var button_transport = [ but_walk, but_velo, but_train, but_bus, but_voiture]
     L.easyBar(button_transport).addTo(map);
 
     
