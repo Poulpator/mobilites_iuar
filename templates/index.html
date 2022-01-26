@@ -30,25 +30,26 @@
 
     <h2>Instructions sur l'identifiant</h2>
     <p>
-        Pour faire le lien entre les réponses au questionnaire du google Forms, nous nous basons sur  <a href="https://www.researchgate.net/publication/324208940_Design_and_Application_of_Self-Generated_Identification_Codes_SGICs_for_Matching_Longitudinal_Data"> un code confidentiel auto généré</a> par les enquêté.e.s  qui sera  demandé ici et sur le google Forms 
+        Nous allons vous demandez, en complément du questionnaire, de tracer votre trajet type entre votre domicile et votre lieu d'étude avec les différents modes de transport. Cela est un exercice assez intuitif qui nous permettra par la suite d'établir un trajet "type" d'un étudiant en Master 1 Urbanisme et Aménagement qui, par exemple habite à Aix et à Marseille. 
+        Nous allons nous baser sur un <a href="https://www.researchgate.net/publication/324208940_Design_and_Application_of_Self-Generated_Identification_Codes_SGICs_for_Matching_Longitudinal_Data"> un code confidentiel auto-généré</a> par les enquêté.e.s qui vous sera également demander dans le questionnaire, ce code nous permettra de faire le lien entre les réponses du questionnaire et votre trajet.
     </p>
-        Le code consiste en 4 questions:
+    <p>
+        Votre code se construit avec ces 4 étapes:
         <ul>
             <li>La première lettre du prénom de votre mère</li>
             <li>le dernier chiffre de votre jour d’anniversaire</li>
             <li>la première lettre du prénom de votre père</li>
             <li>le nombre de frère et combien de frère et sœurs vous avez </li>
         </ul>
-        
-    <p>
     </p>
+        
     <p>
     Exemple : Si votre mère s’appelle <u>A</u>lice, que vous êtes nait le 1<u>4</u>, votre père <u>B</u>ob, et avez <u>2</u> frères 
     votre code sera <strong>A4B2</strong> 
 
         
         <form action="/traitement" id="form_validation" method="post" style="text-align: left;">
-            <label for="self_id" ><strong>identifiant auto genéré:</strong></label>
+            <label for="self_id" ><strong>identifiant auto-genéré:</strong></label>
             <input type="text" id="self_id" name="self_id" placeholder="ex: A4B2" required>
             <input type="hidden" name="chemin" id="chemins-field" required>
         </form>
@@ -58,12 +59,20 @@
     </h2>
 
     <p>
-        Pour tracer votre chemin jusqu’à l’IUAR, commencez par choisir votre mode de transport de départ dans la boite à outils sur la gauche de la carte,
-         et tracez jusqu’à changer de mode de transport, et ainsi de suite jusqu’à l’IUAR 
+        Pour tracer votre trajet type entre votre domicile et l'IUAR (lieu d'étude, indiquer par le ping bleu),  les étapes sont: 
+        <ul>
+            <li>Commencer par choisir votre mode de transport (marche, voiture, bus, etc...) dans la boite à outils sur la gauche de la carte</li>
+            <li>Il vous suffit ensuite de cliquer et de tracer votre trajet jusqu’à changer de mode de transport</li>
+            <li>Pour changer de mode de transport il vous suffit de cliquer un nouveau mode de transport dans la boite à outils et continuer votre tracer jusqu'à l'IUAR</li>
+        </ul>
     </p>
-    <p>Exemple: si vous êtes aux voisinage de la gare Saint Charles : <i> marche puis train puis marche </i> </p>
+    <p>Exemple: Si vous habitez aux alentours de la gare Saint-Charles <i> marche puis train puis marche </i> </p>
     <p>
         Vous pouvez revenir en arriere avec &nbsp; <i class="fas fa-arrow-left"></i> , ou recommencer le chemin depuis le début avec &nbsp; <i class="fas fa-undo"></i>
+    </p>
+
+    <p>
+        Note: Avec l'identifiant recolté ci-dessus, nous n'avons pas la possiblité de savoir qui vous êtes, cependant si vous ne souhaitez pas commencez directement à votre domicile, vous pouvez vous réferez à la premiere grande rue la plus proche, ou un périmètre équivalent à votre temps de trajet habitue
     </p>
     <br>
 
