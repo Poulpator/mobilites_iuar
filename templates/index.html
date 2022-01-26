@@ -29,20 +29,46 @@
     <h1>Enquete mobilités IUAR 2021: les déplacements quotidiens</h1>
 
     <h2>Instructions sur l'identifiant</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <p>
+        Pour faire le lien entre les réponses au questionnaire du google Forms, nous nous basons sur  <a href="https://www.researchgate.net/publication/324208940_Design_and_Application_of_Self-Generated_Identification_Codes_SGICs_for_Matching_Longitudinal_Data"> un code confidentiel auto généré</a> par les enquêté.e.s  qui sera  demandé ici et sur le google Forms 
+    </p>
+        Le code consiste en 4 questions:
+        <ul>
+            <li>La première lettre du prénom de votre mère</li>
+            <li>le dernier chiffre de votre jour d’anniversaire</li>
+            <li>la première lettre du prénom de votre père</li>
+            <li>le nombre de frère et combien de frère et sœurs vous avez </li>
+        </ul>
+        
+    <p>
+    </p>
+    <p>
+    Exemple : Si votre mère s’appelle <u>A</u>lice, que vous êtes nait le 1<u>4</u>, votre père <u>B</u>ob, et avez <u>2</u> frères 
+    votre code sera <strong>A4B2</strong> 
 
-    <form action="/traitement" id="form_validation" method="post">
-        <label for="self_id">identifiant: </label>
-        <input type="text" id="self_id" name="self_id" placeholder="ex: A8B" required>
-        <input type="hidden" name="chemin" id="chemins-field" required>
-    </form>
-
+        
+        <form action="/traitement" id="form_validation" method="post" style="text-align: left;">
+            <label for="self_id" ><strong>identifiant auto genéré:</strong></label>
+            <input type="text" id="self_id" name="self_id" placeholder="ex: A4B2" required>
+            <input type="hidden" name="chemin" id="chemins-field" required>
+        </form>
+        
     <h2>
         Instructions sur la carte
     </h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+    <p>
+        Pour tracer votre chemin jusqu’à l’IUAR, commencez par choisir votre mode de transport de départ dans la boite à outils sur la gauche de la carte,
+         et tracez jusqu’à changer de mode de transport, et ainsi de suite jusqu’à l’IUAR 
+    </p>
+    <p>Exemple: si vous êtes aux voisinage de la gare Saint Charles : <i> marche puis train puis marche </i> </p>
+    <p>
+        Vous pouvez revenir en arriere avec &nbsp; <i class="fas fa-arrow-left"></i> , ou recommencer le chemin depuis le début avec &nbsp; <i class="fas fa-undo"></i>
+    </p>
+    <br>
 
     <div id="map" style="height: 450px;"></div>
+    
     <br>
 
     <input form="form_validation" type="submit" value="Valider">
