@@ -74,8 +74,10 @@
     <p>
         Note: Avec l'identifiant recolté ci-dessus, nous n'avons pas la possiblité de savoir qui vous êtes, cependant si vous ne souhaitez pas commencer directement à votre domicile, vous pouvez vous réferer à la grande rue la plus proche, ou à un périmètre équivalent à votre temps de trajet habituel
     </p>
-    <br>
 
+    <p id="error_map" class="error">
+        <!-- vide tant qu'il n'y a pas d'erreur -->
+    </p>
     <div id="map" style="height: 450px;"></div>
     
     <br>
@@ -328,9 +330,22 @@
 
     }
 
-    function OnSubmit() {
-        console.log("on submuit ! ")
+    function OnSubmit(e) {
+        e.preventDefault();
         var hidden = document.querySelector("#chemins-field");
+
+
+        var error_map = document.getElementById('error_map')
+        if (chemin.length == 0) {
+            error_map.innerHTML = "Veuillez tracer votre chemin"
+            error_map.scrollIntoView({
+                behavior: 'smooth'
+            });
+            return false
+        }
+        else {
+            error_map.innerHTML = ""  
+        }
         
         //resolve circular dependancy 
         var tmp_chemin = chemin;

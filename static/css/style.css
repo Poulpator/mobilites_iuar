@@ -60,6 +60,12 @@ span.reverse {
   direction: rtl;
 }
 
+.error
+{
+  color: red;
+  font-weight: bold;
+}
+
 
 /* Change cursor when mousing over clickable layer */
 
