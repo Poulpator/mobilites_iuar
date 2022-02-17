@@ -78,7 +78,7 @@ def index():
 
 @app.route('/success')
 def success():
-    return "success !"
+    return "Succès ! vous pouvez fermer cet onglet et retourner au questionaire"
 
 @app.route('/traitement', methods=["POST"])
 def traitement():
