@@ -391,7 +391,6 @@
     }
 
     function OnSubmit(e) {
-        e.preventDefault();
         var hidden = document.querySelector("#chemins-field");
 
 
@@ -401,6 +400,7 @@
             error_map.scrollIntoView({
                 behavior: 'smooth'
             });
+            e.preventDefault();
             return false
         }
         else {
