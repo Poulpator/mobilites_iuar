@@ -16,14 +16,14 @@ class EnumDevEnv(Enum): #Enivirronement de developpement
     PROD = 2
 
 
-dev_env = EnumDevEnv.DEV;
-
 app = Flask(__name__)
 #app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 config = configparser.ConfigParser()
 dirname = os.path.dirname(__file__)
 config.read(os.path.join(dirname, 'config_db.ini'))
+
+dev_env =  EnumDevEnv(int(config["ENVIRONMENT"]["dev"]))
 
 if dev_env== EnumDevEnv.PROD:
     
