@@ -64,7 +64,7 @@ class Reponse(db.Model):
     __tablename__ = "reponses"
     id = db.Column(db.Integer, primary_key=True)
     self_generated_id = db.Column(db.String(80), nullable=False)
-    chemin = db.Column(db.String(4096), nullable=False)
+    chemin = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
         return '<Self generated id: %r>' % self.self_generated_id
