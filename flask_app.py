@@ -9,6 +9,7 @@ import configparser
 import os
 
 from sqlalchemy import create_engine
+from sqlalchemy.sql import func
 import sqlalchemy
 
 class EnumDevEnv(Enum): #Enivirronement de developpement
@@ -64,6 +65,7 @@ class Reponse(db.Model):
     __tablename__ = "reponses"
     id = db.Column(db.Integer, primary_key=True)
     self_generated_id = db.Column(db.String(80), nullable=False)
+    time_submited = db.Column(db.DateTime(timezone=True), server_default=func.now())
     chemin = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
