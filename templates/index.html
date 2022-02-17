@@ -12,13 +12,13 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
-
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     
 	
 </head>
@@ -53,7 +53,7 @@
             <input type="text" id="self_id" name="self_id" placeholder="ex: A4B2" required>
             <input type="hidden" name="chemin" id="chemins-field" required>
         </form>
-        
+    </p>   
     <h2>
         Instructions sur la carte
     </h2>
@@ -127,23 +127,17 @@
     iuar_marker.bindPopup("<b>IUAR</b>");
 
 
-                   
-    
-
-    // var TransportEnum = {
-    //     MARCHE  : 0,
-    //     VELO    : 1,
-    //     VOITURE : 2
-    // };
+    //enum 
     var color_coding_transport = {
         MARCHE : "blue",
         VELO : "green", // libre service / personnel ?
-        VOITURE : "red", //covoiturage
+        VOITURE : "orange", 
+        COVOITURAGE : "violet", //covoiturage
         BUS : "pink", //car bhns ?
         TRAIN : "yellow",
-        TROTTINETTE : "orange",
+        AUTRE : "red",
         METRO : "brown",
-        TRAM : "white",
+        TRAM : "black",
         DEUX_ROUES : "gray"
 
     };
@@ -151,17 +145,6 @@
     var current_transport = color_coding_transport.MARCHE;
     var last_transport = current_transport;
     
-    /*
-    button :
-    - reset 
-    - undo
-    - redo (si le temps)
-    - un part mode de transports 
-
-    */
-
-
-
     
     var but_undo = L.easyButton('fa-arrow-left', function(btn, map){
         
@@ -208,74 +191,146 @@
     buttons_navigation = [but_undo, but_reset];
     L.easyBar(buttons_navigation).addTo(map)
 
-
-
     function SwitchModeTransport(NouveauModeTransport) {
         last_transport = current_transport;
         current_transport = NouveauModeTransport;
     }
 
-    var but_walk = L.easyButton('fa-walking', function(btn, map){
-        SwitchModeTransport(color_coding_transport.MARCHE);
-    }).addTo(map);
+    L.Control.TransportButton = L.Control.extend({
 
-    var but_velo = L.easyButton('fa-bicycle', function(btn, map){
-        SwitchModeTransport(color_coding_transport.VELO);
-    }).addTo(map);
+        options : {
+            position: 'topleft', //defaut leaflet
+            activated : false
+        },
 
-    var but_train = L.easyButton('fa-train', function(btn, map){
-        SwitchModeTransport(color_coding_transport.TRAIN);
-    }).addTo(map);
+        initialize: function(options) {
+            L.setOptions(this, options);
+        },
 
-    var but_bus = L.easyButton('fa-bus', function(btn, map){
-        SwitchModeTransport(color_coding_transport.BUS);
-    }).addTo(map);
+        onAdd: function(map) {
+            fn = function(btn) {TestFunction();return};
 
-    var but_voiture = L.easyButton('fa-car', function(btn, map){
-        SwitchModeTransport(color_coding_transport.VOITURE);
-    }).addTo(map);
+            return this._createButton('<span class="star">&starf;test2</span>', "test2 start" ,fn, null, null);
+        },
 
-    var button_transport = [ but_walk, but_velo, but_train, but_bus, but_voiture]
-    L.easyBar(button_transport).addTo(map);
+        _createButton(inner_html, title, fn, container, control_bar) {
+
+            this.control_bar = control_bar;
+
+            this._button = L.DomUtil.create('button', "transport-button", container);
+ 
+            this._button.innerHTML = inner_html;
+            this._button.href = '#';
+            this._button.title = title;
+
+            L.DomEvent.disableClickPropagation(this._button);
+            L.DomEvent.on(this._button, 'click', L.DomEvent.stop);
+            L.DomEvent.on(this._button, 'click', function(e){
+                
+                fn(this._button);
+
+                //reset tous les boutons par défaut
+                this.control_bar._resetButtons();
+                //active le bouton actuel
+                this.options.activated = true;
+                //update tous les boutons
+                this.control_bar._update();
+            }, this);
+            L.DomEvent.on(this._button, 'click', this._refocusOnMap, this);
+
+            return this._button;
+        },
+
+        _update: function(){
+            className = "button_activated"
+            if (this.options.activated) {
+                //add class      
+                L.DomUtil.addClass(this._button, className);
+            } 
+            else {
+                //remove class
+                L.DomUtil.removeClass(this._button, className);    
+            }
+        }
+        
+    })
 
     
     function TestFunction() {
         console.log("test");
     }
 
-    L.Control.Watermark = L.Control.extend({
-        onAdd: function(map) {
-            // var img = L.DomUtil.create('img');
+   /* var mybutton = new L.Control.TransportButton({ position: 'topleft' });
+    mybutton.addTo(map)
+    */
 
-            // img.src = '../../docs/images/logo.png';
-            // img.style.width = '200px';
+    L.Control.TransportBar = L.Control.extend({
 
-            // return img;
-            // var button = L.DomUtil.create('a', );
-            // button.innerHTML= "test";
-            
-            var button = L.DomUtil.create('a');
-            button.innerHTML = "test";
-            button.href = '#';
-            button.title = "test";
-
-            L.DomEvent.disableClickPropagation(button);
-            L.DomEvent.on(button, 'click', L.DomEvent.stop);
-            L.DomEvent.on(button, 'click', TestFunction, this);
-            L.DomEvent.on(button, 'click', this._refocusOnMap, this);
-            return button
+        options : {
+            position: 'topleft', //defaut leaflet
         },
 
-        onRemove: function(map) {
-            // Nothing to do here
-        }
-    });
+        _buttons : [],
 
-    L.control.watermark = function(opts) {
-        return new L.Control.Watermark(opts);
+        onAdd : function(map){
+            var container = L.DomUtil.create('div', 'leaflet-bar transport-bar');
+
+            internal_createButton = (glyph, text, color_coding) => {
+                //fonction pour simplifier rajouter des boutons
+                let but = new L.Control.TransportButton()
+                but._createButton(`<i class="fas ${glyph} fa-fw"></i> &nbsp;${text}&nbsp;<i class="fa fa-square" style="color: ${color_coding}; text-shadow: 0 0 1px #000;"></i>`, 
+                                  text,
+                                  function(btn) {SwitchModeTransport(color_coding);},
+                                  container,
+                                  this);
+                this._buttons.push(but)
+            }
+
+            // var but = new L.Control.TransportButton()
+            // but._createButton('<i class="fas fa-moon"></i>&nbsp;test', "test2 moon" ,TestFunction, container, this);
+            // this._buttons.push(but)
+
+            internal_createButton("fa-walking", "Marche", color_coding_transport.MARCHE);
+            internal_createButton("fa-bicycle", "Velo/Trottinette", color_coding_transport.VELO);
+            internal_createButton("fa-train", "Train", color_coding_transport.TRAIN);
+            internal_createButton("fa-car", "Voiture", color_coding_transport.VOITURE);
+            internal_createButton("fa-car", "Covoiture", color_coding_transport.COVOITURAGE);
+            internal_createButton("fa-bus", "Bus/Car", color_coding_transport.BUS);
+            internal_createButton("fa-subway", "Metro", color_coding_transport.METRO);
+            internal_createButton("fa-motorcycle", "Deux-roues(motorisés)", color_coding_transport.DEUX_ROUES);
+            internal_createButton("fa-train", "Tram", color_coding_transport.TRAM);
+            internal_createButton("fa-question-circle", "Autre", color_coding_transport.AUTRE);
+
+            // var but2 = new L.Control.TransportButton()
+            // but2._createButton('<i class="fas fa-sun fa-fw"></i>&nbsp;Deux-roues</br>(motorisés) &nbsp;<i class="fas fa-square"  style="color: yellow;  text-shadow: 0 0 1px #000;"></i>', "test2 moon" ,TestFunction, container, this);
+            // this._buttons.push(but2)
+
+            return container;         
+        },
+
+        _resetButtons: function(){
+            for (let i = 0; i < this._buttons.length; i++) {
+                //const element = this._buttons[i];
+                this._buttons[i].options.activated = false;
+            }
+
+        },
+        _update : function(){
+            for (let i = 0; i < this._buttons.length; i++) {
+                //const element = this._buttons[i];
+                this._buttons[i]._update();
+            }
+        }
+
+
+    })
+
+    L.Control.transportBar = function(opts) {
+        return new L.Control.TransportBar(opts);
     }
-    L.control.watermark({ position: 'topleft' }).addTo(map);
-    
+
+    L.Control.transportBar().addTo(map)
+
     //peut etre le retablir pour un tuto ? 
     // var popup = L.popup();   
 
