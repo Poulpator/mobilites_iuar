@@ -359,8 +359,13 @@
             last_transport= current_transport;
         }
 
+        //arrondi à 5 chiffres après la virgule
+        let latlng = {...e.latlng};
+        latlng.lat = Math.round( latlng.lat * 1e5 ) / 1e5;
+        latlng.lng = Math.round( latlng.lng * 1e5 ) / 1e5;
+
         let last_line = chemin[chemin.length - 1];
-        last_line.line_points.push(e.latlng);
+        last_line.line_points.push(latlng);
         last_line.polyline.setLatLngs(last_line.line_points);
 
     }
